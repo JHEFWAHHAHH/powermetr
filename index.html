@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Потужнометр</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      transition: background-color 2s ease;
+    }
+    #scale {
+      width: 80%;
+      height: 30px; /* Збільшена висота шкали */
+      background: linear-gradient(to right, #2ecc71, #f1c40f, #e74c3c, #9b59b6, #34495e);
+      position: relative;
+      margin: 20px auto; /* Вирівнюємо шкалу по центру */
+    }
+    #arrow {
+      position: absolute;
+      top: -10px;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 20px solid black;
+      transition: left 2s ease-in-out;
+    }
+    #input-container {
+      margin-bottom: 20px;
+    }
+    .level {
+      display: inline-block;
+      width: 18%;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2em;
+      color: black; /* Чорний текст */
+    }
+    .level-1 {
+      color: black;
+    }
+    .level-2 {
+      color: black;
+    }
+    .level-3 {
+      color: black;
+    }
+    .level-4 {
+      color: black;
+    }
+    .level-5 {
+      color: black;
+    }
+    #message {
+      font-size: 2em;
+      color: black; /* Чорний текст */
+      font-weight: bold;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+    #flag {
+      display: none; /* Спочатку прапор не відображається */
+      width: 50%; /* Ширина прапора */
+      height: auto;
+      margin-top: 20px;
+      position: absolute;
+      bottom: -50px; /* Розташовуємо під шкалою */
+      left: 50%;
+      transform: translateX(-50%); /* Вирівнюємо по центру */
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Потужнометр!</h1>
+  <div id="input-container">
+    <input type="text" id="wordInput" placeholder="Введіть слово, щоб розпочати!" />
+    <button onclick="moveArrow()">Перевірити!</button>
+  </div>
+  
+  <div id="scale">
+    <div class="level level-1">Не Потужно</div>
+    <div class="level level-2">Несомовита Потужність</div>
+    <div class="level level-3">Неземна Потужність</div>
+    <div class="level level-4">Блискавична Потужність</div>
+    <div class="level level-5">Потужний герой України</div>
+    <div id="arrow"></div>
+  </div>
+
+  <!-- Гімн -->
+  <audio id="anthem" preload="auto">
+    <source src="file:///C:/Users/rex/Downloads/1462a1b7ae0a.mp3" type="audio/mpeg">
+    Ваш браузер не підтримує аудіо.
+  </audio>
+
+  <!-- Звук для "данів" -->
+  <audio id="danivSound" preload="auto">
+    <source src="file:///C:/Users/rex/Downloads/d0b2d0b8d0b7d0b3-d181d0b2d0b8d0bdd18cd0b8.mp3" type="audio/mpeg">
+    Ваш браузер не підтримує аудіо.
+  </audio>
+
+  <script>
+    function moveArrow() {
+      const input = document.getElementById("wordInput").value;
+      const arrow = document.getElementById("arrow");
+      const body = document.body;
+      const anthem = document.getElementById("anthem");
+      const danivSound = document.getElementById("danivSound");
+      const message = document.getElementById("message");
+      const flag = document.getElementById("flag");
+
+      // Перевірка на слова "данів", "віктор", "росія"
+      if (input.toLowerCase().includes("данів") || input.toLowerCase().includes("віктор") || input.toLowerCase().includes("росія")) {
+        message.textContent = "ти хохол";
+        message.style.display = "block"; // Показуємо повідомлення
+        setTimeout(() => {
+          message.style.display = "none"; // Приховуємо повідомлення після 5 секунд
+        }, 5000);
+
+        // Вмикаємо звук для "данів" на 5 секунд
+        danivSound.play();
+        setTimeout(() => {
+          danivSound.pause();
+          danivSound.currentTime = 0; // Щоб відтворення почалося спочатку
+        }, 5000);
+
+        return; // Не виконуємо потужнометр, якщо одне з цих слів
+      }
+
+      // Якщо слово не "данів", "віктор" або "росія", то працює потужнометр
+      const randomPosition = Math.random();
+      const leftPosition = randomPosition * 80; // Шкала займає 80% ширини екрану
+
+      // Рух стрілки на шкалі
+      arrow.style.left = `${leftPosition}%`;
+
+      // Якщо стрілка на останньому рівні, змінюємо фон і запускаємо гімн
+      if (leftPosition >= 70) {
+        // Показуємо прапор під шкалою
+        flag.style.display = "block";
+        flag.src = "https://www.5.ua/media/pictures/original/146560.jpg?t=1534932390"; // Прапор України
+
+        // Відтворюємо гімн
+        anthem.play();
+
+        // Після 9 секунд повертаємо фон до нормального і зупиняємо гімн
+        setTimeout(() => {
+          flag.style.display = "none"; // Приховуємо прапор після 9 секунд
+          anthem.pause();
+          anthem.currentTime = 0; // Щоб відтворення почалося спочатку
+        }, 9000); // 9 секунд
+      }
+    }
+  </script>
+
+  <!-- Повідомлення для слова "данів" -->
+  <div id="message"></div>
+
+  <!-- Прапор України, що з'являється під шкалою -->
+  <img id="flag" />
+
+</body>
+</html>
